@@ -3,11 +3,12 @@ var gamePattern = [];
 var userPattern = [];
 var level = 0;
 var started = false;
+var mod = false;
 
 $(document).ready(function () {
     var topScore = localStorage.getItem("score");
     if(topScore != null)
-        $("#highScoreValue").text(topScore);
+    $("#highScoreValue").text(topScore);
 });
 
 function setScore(score){
@@ -19,6 +20,12 @@ function setScore(score){
     }
 }
 
+$("#highScoreValue").click(function(){
+    mod = true;
+    $("body").addClass("mod");
+    console.log("mod :)");
+});
+
 $(document).keypress(function (event) { 
     if(!started){
         startGame();
@@ -29,6 +36,12 @@ $("h1").click(function(){
     if(!started)
         startGame();
 });
+
+function randomize(currButton){
+    if(mod){
+        currButton.style.backgroundColor = buttonColors[(Math.floor(Math.random() * buttonColors.length))];
+    }
+}
 
 function startGame() {
     $("#level-title").text("Level " + level);
@@ -89,6 +102,7 @@ function buttonClick(currButton){
 
 $("div.btn").click(function(){
     if(started){
+        randomize(this);
         buttonClick(this.id);
         userPattern.push(this.id);
         checkAnswer(userPattern.length - 1);

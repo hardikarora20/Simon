@@ -4,6 +4,21 @@ var userPattern = [];
 var level = 0;
 var started = false;
 
+$(document).ready(function () {
+    var topScore = localStorage.getItem("score");
+    if(topScore != null)
+        $("#highScoreValue").text(topScore);
+});
+
+function setScore(score){
+    var saved = localStorage.getItem("score");
+    if(saved == null || saved < score){
+        localStorage.setItem("score", score);
+        topScore = score;
+        $("#highScoreValue").text(score);
+    }
+}
+
 $(document).keypress(function (event) { 
     if(!started){
         startGame();
@@ -17,7 +32,8 @@ $("h1").click(function(){
 
 function startGame() {
     $("#level-title").text("Level " + level);
-    setTimeout(nextSequence, 600);
+    // setTimeout(nextSequence, 600);
+    nextSequence();
     started = true;
 }
 
@@ -50,16 +66,17 @@ function checkAnswer(currLevel){
 }
 
 function gameOver() {
+    startOver();
     $("body").addClass("game-over");
     setTimeout(function () {
         $("body").removeClass("game-over");
     }, 200);
     new Audio("sounds/wrong.mp3").play();
-    startOver();
     $("#level-title").html("Game Over!");
 }
 
 function startOver() {
+    setScore(level);
     started = false;
     level = 0;
     gamePattern = [];
@@ -71,9 +88,11 @@ function buttonClick(currButton){
 }
 
 $("div.btn").click(function(){
-    buttonClick(this.id);
-    userPattern.push(this.id);
-    checkAnswer(userPattern.length - 1);
+    if(started){
+        buttonClick(this.id);
+        userPattern.push(this.id);
+        checkAnswer(userPattern.length - 1);
+    }
 });
 
 function animateButton(currButton) {

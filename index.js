@@ -7,8 +7,10 @@ var mod = false;
 
 $(document).ready(function () {
     var topScore = localStorage.getItem("score");
-    if(topScore != null)
-    $("#highScoreValue").text(topScore);
+    if(topScore != null){
+        $("#highScoreValue").text(topScore);
+        localStorage.setItem("score", 0);
+    }
 });
 
 function setScore(score){
@@ -20,7 +22,7 @@ function setScore(score){
     }
 }
 
-$("#highScoreValue").click(function(){
+$(".high").click(function(){
     mod = true;
     $("body").addClass("mod");
     console.log("mod :)");

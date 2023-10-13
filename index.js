@@ -7,10 +7,10 @@ var mod = false;
 
 $(document).ready(function () {
     var topScore = localStorage.getItem("score");
-    if(topScore != null){
+    if(topScore != null)
         $("#highScoreValue").text(topScore);
+    else    
         localStorage.setItem("score", 0);
-    }
 });
 
 function setScore(score){
